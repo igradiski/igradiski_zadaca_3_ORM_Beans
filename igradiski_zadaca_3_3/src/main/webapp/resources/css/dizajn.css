@@ -1,0 +1,13 @@
+div.vidljivo{
+    height: 90vh;
+    overflow:scroll;
+    visibility: visible;
+    display: block;
+}
+
+div.sakriveno{
+    height: 90vh;
+    overflow:scroll;
+    visibility: hidden;
+    display: none;
+}

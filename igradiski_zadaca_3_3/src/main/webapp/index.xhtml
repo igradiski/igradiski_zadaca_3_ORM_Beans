@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>igradiski - zadaca br. 3</title>
+        <link rel="stylesheet" type="text/css" href="WEB-INF/css/dizajn.css"/>
+        <h:outputStylesheet library="css" name="dizajn.css"/>
+    </h:head>
+    <h:body id="bodi">
+        <h:outputLink value="#{application.contextPath}/index.xhtml">Aktivnost A1</h:outputLink><p>  </p>
+         <h:outputLink value="#{application.contextPath}/aktivnostA2.xhtml">Aktivnost A2</h:outputLink><br></br>
+        <h:form id="forma">     
+
+            <div id="p1" class="#{prikazKorisnika.visibilityP1}">
+                <p:dataTable id="tablica" value="#{prikazKorisnika.korisnici}" var="k" rows="20" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,50,100">
+                    <p:column>  
+                        <f:facet id="ime" name="header">Ime</f:facet>#{k.ime}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="prezime" name="header">Prezime</f:facet>#{k.prezime}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="brojAerodroma" name="header">Broj aerodroma</f:facet>
+                        (#{prikazKorisnika.brojAerodromaKorisnika(k.korIme)})
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="mail" name="header">Email</f:facet>#{k.emailAdresa}
+                    </p:column>
+
+                    <p:column>  
+                        <f:facet id="korime" name="header">Korisnicko ime</f:facet>#{k.korIme}
+                    </p:column>
+                    <p:column>
+                        <p:commandButton  value="Prikazi korisnikove aerodrome" action="#{prikazKorisnika.odaberiKorisnika(k.korIme)}">
+                            <f:ajax   render="@form p1 p2 p3 test22 tablicaP2" execute="ime korime" delay="300" ></f:ajax>
+                        </p:commandButton>
+
+                    </p:column>
+                </p:dataTable>    
+        
+            </div>
+            
+            <div id="p2" class="#{prikazKorisnika.visibilityP2}">    
+                <p:dataTable id="tablicaP2" value="#{prikazKorisnika.odabraniAerodromiKorisnika}" var="k" rows="20" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,50,100">
+                    <p:column>  
+                        <f:facet id="korisnickoIme" name="header">Korisnicko ime</f:facet>#{prikazKorisnika.odabraniKorisnik}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="identAerodroma" name="header">Ident aerodroma</f:facet>#{k.ident.ident}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="nazivAerodroma" name="header">Naziv aerodroma</f:facet>#{k.ident.name}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="drzavaAerodoma" name="header">Drzava aerodroma</f:facet>#{k.ident.isoCountry}
+                    </p:column>
+                     <p:column>  
+                         <f:facet id="datumSpremanja" name="header">Datum spremanja</f:facet>
+                         #{prikazKorisnika.formatiranjeDatuma(k.stored)}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="brojKorisnika" name="header">Broj korisnika koji prate</f:facet>
+                        #{prikazKorisnika.brojKorisnikaKojiPrateAerodrom(k.ident)}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="brojDanaPreuzimanja" name="header">Broj dana preuzimanja</f:facet>
+                        #{prikazKorisnika.brojDanaPreuzimanja(k.ident)}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="brojAviona" name="header">Broj aviona</f:facet>
+                        #{prikazKorisnika.brojAvionaAerodroma(k.ident)}
+                    </p:column>
+                    <p:column>
+                        <p:commandButton  value="Prikazi datume aerodroma" action="#{prikazKorisnika.otvoriP3(k.ident)}">
+                            <f:ajax   render="@form p1 p2 p3 test22 tablicaP2 tablicaP3" execute="ime korime" delay="300" ></f:ajax>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>    
+            </div>
+            
+            <div id="p3" class="#{prikazKorisnika.visibilityP3}">
+                <p:dataTable id="tablicaP3" value="#{prikazKorisnika.logoviAerodromaP3}" var="l" rows="20" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,50,100">
+                    <p:column>  
+                        <f:facet id="danPreuzimanja" name="header">Dan preuzimanja</f:facet>
+                        #{prikazKorisnika.formatiranjeDanaPreuzimanjaP3(l.myairportslogPK.flightdate)}
+                    </p:column>
+                     <p:column>  
+                         <f:facet id="vrijemePreuzimanja" name="header">Vrijeme preuzimanja</f:facet>
+                         #{prikazKorisnika.formatiranjeDatuma(l.stored)}
+                    </p:column>
+                    
+                    
+                    <p:column>
+                        <p:commandButton  value="Brisanje podataka" action="#{prikazKorisnika.obrisiZapisIzBP(l)}">
+                           <f:ajax   render="@form p1 p2 p3 test22 tablicaP2 tablicaP3" execute="ime korime" delay="300" ></f:ajax>
+                        </p:commandButton>
+                    </p:column>
+                </p:dataTable>   
+                <p:commandButton  value="Vrati se na početak" action="#{prikazKorisnika.VratiNaPocetak()}">
+                    <f:ajax   render="@form p1 p2 p3 test22 tablicaP2 tablicaP3 tablica"  delay="300" ></f:ajax>
+                </p:commandButton>
+            </div>  
+       
+    </h:form>
+    </h:body>
+</html>
+

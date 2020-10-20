@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>igradiski - zadaca br. 3 A2</title>
+        <link rel="stylesheet" type="text/css" href="WEB-INF/css/dizajn.css"/>
+        <h:outputStylesheet library="css" name="dizajn.css"/>
+    </h:head>
+    <h:body>
+       <h:outputLink value="#{application.contextPath}/index.xhtml">Aktivnost A1</h:outputLink><p>  </p>
+       <h:outputLink value="#{application.contextPath}/aktivnostA2.xhtml">Aktivnost A2</h:outputLink><br></br>
+       <h:form id="forma">
+           <div id="p1" class="#{prikazAerodroma.visibilityP1}">
+               <h:selectOneListbox id="ls1" value="#{prikazKorisnika.odabraniKorisnik}" size="10">
+                   <f:selectItems value="#{prikazKorisnika.korisnici}" var="k" 
+                                  itemLabel="#{k.ime}  #{k.prezime}" itemValue="#{k.korIme}">
+                   </f:selectItems>
+                   
+               </h:selectOneListbox>
+               
+               <p>Unesite ime aerodroma: </p>
+               <h:inputText  id="username" value="#{prikazAerodroma.nazivAerodroma}"/>&nbsp;
+               <p:commandButton  value="Potraži JPQL" action="#{prikazAerodroma.DohvatiAerodromePremaNazivu()}" >
+                    <f:ajax   render="@form p1 username ls1 tablicaP2" execute="ime korime" delay="300" ></f:ajax>
+               </p:commandButton>
+               <p:commandButton  value="Potraži CApi" action="#{prikazAerodroma.DohvatiAerodromePremaNazivuCAPI()}">
+                    <f:ajax   render="@form p1 username ls1 tablicaP2" execute="ime korime" delay="300" ></f:ajax>
+               </p:commandButton><br></br>
+           </div>
+           <div id="p2" class="#{prikazAerodroma.visibilityP2}">
+               <p:dataTable id="tablicaP2" value="#{prikazAerodroma.listaAerodroma}" var="k" rows="20" paginator="true" 
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" 
+                             rowsPerPageTemplate="5,10,50,100">
+                    <p:column>  
+                        <f:facet id="korisnickoIme" name="header">Korisnicko ime</f:facet>#{prikazKorisnika.odabraniKorisnik}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="nazivAerodroma" name="header">Naziv aerodroma</f:facet>#{k.name}
+                    </p:column>
+                    <p:column>  
+                        <f:facet id="drzavaAerodoma" name="header">Drzava aerodroma</f:facet>#{k.isoCountry}
+                    </p:column>
+                </p:dataTable>    
+           </div>
+       </h:form>
+       
+       
+    </h:body>
+</html>
+
